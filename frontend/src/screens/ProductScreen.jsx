@@ -3,6 +3,8 @@ import React, { useEffect, useReducer } from 'react';
 import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 import Rating from '../components/Rating';
 
 const reducer = (state, action) => {
@@ -54,9 +56,9 @@ const ProductScreen = () => {
   }, [slug]);
 
   return loading ? (
-    <div>Loading...</div>
+    <LoadingBox />
   ) : error ? (
-    <div>{error}</div>
+    <MessageBox variant='danger'>{error}</MessageBox>
   ) : (
     <div>
       <Row>
