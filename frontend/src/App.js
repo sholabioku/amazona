@@ -19,10 +19,12 @@ function App() {
           </Navbar>
         </header>
         <main>
-          <Routes>
-            <Route path='/product/:slug' element={<ProductScreen />} />
-            <Route path='/' element={<HomeScreen />} />
-          </Routes>
+          <Container>
+            <Routes>
+              <Route path='/product/:slug' element={<ProductScreen />} />
+              <Route path='/' element={<HomeScreen />} />
+            </Routes>
+          </Container>
         </main>
       </div>
     </BrowserRouter>
