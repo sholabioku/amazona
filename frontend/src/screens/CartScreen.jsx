@@ -25,6 +25,13 @@ const CartScreen = () => {
     });
   };
 
+  const removeItemHandler = (item) => {
+    ctxDispatch({
+      type: 'CART_REMOVE_ITEM',
+      payload: item,
+    });
+  };
+
   return (
     <div>
       <Helmet>
@@ -73,7 +80,10 @@ const CartScreen = () => {
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>
-                      <Button variant='light'>
+                      <Button
+                        variant='light'
+                        onClick={() => removeItemHandler(item)}
+                      >
                         <i className='fas fa-trash' />
                       </Button>
                     </Col>
