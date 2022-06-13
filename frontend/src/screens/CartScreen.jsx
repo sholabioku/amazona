@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Col, ListGroup, Row } from 'react-bootstrap';
+import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import MessageBox from '../components/MessageBox';
@@ -60,7 +60,36 @@ const CartScreen = () => {
             </ListGroup>
           )}
         </Col>
-        <Col md={4}></Col>
+        <Col md={4}>
+          <Card>
+            <Card.Body>
+              <ListGroup variant='flush'>
+                <ListGroup.Item>
+                  <h3>
+                    Subtotal: (
+                    {cartItems.reduce((acc, item) => acc + item.quantity, 0)}{' '}
+                    items) : $
+                    {cartItems.reduce(
+                      (acc, item) => acc + item.price * item.quantity,
+                      0
+                    )}
+                  </h3>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <div className='d-grid'>
+                    <Button
+                      type='button'
+                      variant='primary'
+                      disabled={cartItems.length === 0}
+                    >
+                      Proceed to Checkout
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </div>
   );
