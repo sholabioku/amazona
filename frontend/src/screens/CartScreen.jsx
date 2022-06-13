@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext } from 'react';
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 
@@ -11,6 +11,8 @@ const CartScreen = () => {
   const {
     cart: { cartItems },
   } = state;
+
+  const navigate = useNavigate();
 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
@@ -30,6 +32,10 @@ const CartScreen = () => {
       type: 'CART_REMOVE_ITEM',
       payload: item,
     });
+  };
+
+  const checkoutHandler = async () => {
+    navigate('/signin?redirect=/shipping');
   };
 
   return (
@@ -114,6 +120,7 @@ const CartScreen = () => {
                       type='button'
                       variant='primary'
                       disabled={cartItems.length === 0}
+                      onClick={checkoutHandler}
                     >
                       Proceed to Checkout
                     </Button>
