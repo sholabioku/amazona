@@ -1,5 +1,21 @@
 import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import colors from 'colors';
+
+dotenv.config();
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then((conn) => {
+    console.log(
+      `MongoDB connected: ${conn.connection.host}`.cyan.underline.bold
+    );
+  })
+  .catch((err) => {
+    console.log(`MongoDB connection error: ${err.message}`.red.underline.bold);
+    process.exit(1);
+  });
 
 import data from './data.js';
 const app = express();
