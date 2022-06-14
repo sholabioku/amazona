@@ -13,7 +13,7 @@ const Product = (props) => {
   } = state;
 
   const addToCartHandler = async (item) => {
-    const existItem = cartItems.find((x) => x._id === product._id);
+    const existItem = cartItems.find((item) => item._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
@@ -38,7 +38,13 @@ const Product = (props) => {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>${product.price}</Card.Text>
-        <Button onClick={() => addToCartHandler(product)}>Add to cart</Button>
+        {product.countInStock === 0 ? (
+          <Button variant='light' disabled>
+            Out of stock
+          </Button>
+        ) : (
+          <Button onClick={() => addToCartHandler(product)}>Add to cart</Button>
+        )}
       </Card.Body>
     </Card>
   );
