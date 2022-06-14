@@ -7,7 +7,6 @@ import Rating from './Rating';
 
 const Product = (props) => {
   const { product } = props;
-  console.log(product);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
@@ -15,14 +14,13 @@ const Product = (props) => {
   } = state;
 
   const addToCartHandler = async (item) => {
-    const existItem = cartItems.find((item) => item._id === product._id);
+    const existItem = cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
-      window.alert('Sorry. This item is out of stock.');
+      window.alert('Sorry. Product is out of stock');
       return;
     }
-
     ctxDispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
