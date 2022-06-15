@@ -26,8 +26,11 @@ const app = express();
 app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);
 
-const port = process.env.PORT || 5000;
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
 
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Serve at http://localhost:${port}`.yellow.bold);
 });
