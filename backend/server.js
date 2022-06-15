@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import colors from 'colors';
 
+import data from './data.js';
+import seedRouter from './routes/seedRoutes.js';
+
 dotenv.config();
 
 mongoose
@@ -17,8 +20,9 @@ mongoose
     process.exit(1);
   });
 
-import data from './data.js';
 const app = express();
+
+app.use('/api/seed', seedRouter);
 
 app.get('/api/products', (req, res) => {
   res.send(data.products);
