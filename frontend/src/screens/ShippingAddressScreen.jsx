@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 
 const ShippingAddressScreen = () => {
@@ -52,6 +53,7 @@ const ShippingAddressScreen = () => {
       <Helmet>
         <title>Shipping Address</title>
       </Helmet>
+      <CheckoutSteps step1 step2 />
       <div className='container small-container'>
         <h1 className='my-3'>Shipping Address</h1>
         <Form onSubmit={submitHandler}>
