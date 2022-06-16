@@ -1,5 +1,12 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import { Badge, Container, Nav, Navbar } from 'react-bootstrap';
+import {
+  Badge,
+  Container,
+  Dropdown,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import HomeScreen from './screens/HomeScreen';
@@ -11,7 +18,7 @@ import SigninScreen from './screens/SigninScreen';
 
 function App() {
   const { state } = useContext(Store);
-  const { cart } = state;
+  const { cart, userInfo } = state;
 
   return (
     <BrowserRouter>
@@ -34,6 +41,20 @@ function App() {
                     </Badge>
                   )}
                 </Link>
+                {userInfo ? (
+                  <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
+                    <LinkContainer to='/profile'>
+                      <NavDropdown.Item>User Profile</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/orderhistory'>
+                      <NavDropdown.Item>Order History</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                ) : (
+                  <Link className='nav-link' to='/signin'>
+                    Sign In
+                  </Link>
+                )}
               </Nav>
             </Container>
           </Navbar>
