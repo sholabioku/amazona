@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ const ShippingAddressScreen = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
   const {
+    userInfo,
     cart: { shippingAddress },
   } = state;
 
@@ -19,6 +20,12 @@ const ShippingAddressScreen = () => {
     shippingAddress.postalCode || ''
   );
   const [country, setCountry] = useState(shippingAddress.country || '');
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate('/signin');
+    }
+  }, [userInfo, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
