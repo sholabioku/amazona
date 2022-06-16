@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import { Store } from '../Store';
 
 const ShippingAddressScreen = () => {
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [country, setCountry] = useState('');
 
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+
   const submitHandler = (e) => {
     e.preventDefault();
+    ctxDispatch({
+      type: 'SAVE_SHIPPING_ADDRESS',
+      payload: {
+        fullName,
+        address,
+        city,
+        postalCode,
+        country,
+      },
+    });
+
+    localStorage.setItem(
+      'shippingAddress',
+      JSON.stringify({ fullName, address, city, postalCode, country })
+    );
+    navigate('/payment');
   };
 
   return (
