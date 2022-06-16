@@ -8,6 +8,8 @@ import {
   NavDropdown,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
@@ -28,6 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className='d-flex flex-column site-container'>
+        <ToastContainer position='bottom-center' limit={1} />
         <header>
           <Navbar bg='dark' variant='dark'>
             <Container>
