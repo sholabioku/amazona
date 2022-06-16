@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
+import { getError } from '../utils';
 
 const SigninScreen = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const SigninScreen = () => {
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');
     } catch (error) {
-      toast.error('Invalid credentials');
+      toast.error(getError(error));
     }
   };
 
