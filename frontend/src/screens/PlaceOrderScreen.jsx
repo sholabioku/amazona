@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
@@ -30,6 +30,33 @@ const PlaceOrderScreen = () => {
                 {cart.shippingAddress.postalCode},{cart.shippingAddress.country}
               </Card.Text>
               <Link to='/shipping'>Edit</Link>
+            </Card.Body>
+          </Card>
+
+          <Card className='mb-3'>
+            <Card.Body>
+              <Card.Title>Items</Card.Title>
+              <ListGroup variant='flush'>
+                {cart.cartItems.map((item) => (
+                  <ListGroup.Item key={item._id}>
+                    <Row className='align-items-center'>
+                      <Col md={6}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className='img-fluid rounded img-thumbnail'
+                        ></img>{' '}
+                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      </Col>
+                      <Col md={3}>
+                        <span>{item.quantity}</span>
+                      </Col>
+                      <Col md={3}>${item.price}</Col>
+                    </Row>
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+              <Link to='/cart'>Edit</Link>
             </Card.Body>
           </Card>
         </Col>
