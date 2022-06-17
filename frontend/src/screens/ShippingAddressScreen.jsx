@@ -14,13 +14,15 @@ const ShippingAddressScreen = () => {
     cart: { shippingAddress },
   } = state;
 
-  const [fullName, setFullName] = useState(shippingAddress.fullName || '');
-  const [address, setAddress] = useState(shippingAddress.address || '');
-  const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress.postalCode || ''
-  );
-  const [country, setCountry] = useState(shippingAddress.country || '');
+  const [formData, setFormData] = useState({
+    fullName: shippingAddress.fullName || '',
+    address: shippingAddress.address || '',
+    city: shippingAddress.city || '',
+    postalCode: shippingAddress.postalCode || '',
+    country: shippingAddress.country || '',
+  });
+
+  const { fullName, address, city, postalCode, country } = formData;
 
   useEffect(() => {
     if (!userInfo) {
@@ -48,6 +50,13 @@ const ShippingAddressScreen = () => {
     navigate('/payment');
   };
 
+  const changeHandler = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   return (
     <div>
       <Helmet>
@@ -61,7 +70,8 @@ const ShippingAddressScreen = () => {
             <Form.Label>Full Name</Form.Label>
             <Form.Control
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              name='fullName'
+              onChange={changeHandler}
               required
             />
           </Form.Group>
@@ -69,7 +79,8 @@ const ShippingAddressScreen = () => {
             <Form.Label>Address</Form.Label>
             <Form.Control
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              name='address'
+              onChange={changeHandler}
               required
             />
           </Form.Group>
@@ -77,7 +88,8 @@ const ShippingAddressScreen = () => {
             <Form.Label>City</Form.Label>
             <Form.Control
               value={city}
-              onChange={(e) => setCity(e.target.value)}
+              name='city'
+              onChange={changeHandler}
               required
             />
           </Form.Group>
@@ -85,7 +97,8 @@ const ShippingAddressScreen = () => {
             <Form.Label>Postal Code</Form.Label>
             <Form.Control
               value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
+              name='postalCode'
+              onChange={changeHandler}
               required
             />
           </Form.Group>
@@ -93,7 +106,8 @@ const ShippingAddressScreen = () => {
             <Form.Label>Country</Form.Label>
             <Form.Control
               value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              name='country'
+              onChange={changeHandler}
               required
             />
           </Form.Group>
