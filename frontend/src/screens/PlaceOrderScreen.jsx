@@ -69,7 +69,7 @@ const PlaceOrderScreen = () => {
           },
         }
       );
-      ctxDispatch({ type: 'CLEAR_CART' });
+      ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE_SUCCESS' });
       localStorage.removeItem('cartItems');
       navigate(`/orders/${data.order._id}`);
