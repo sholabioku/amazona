@@ -92,7 +92,7 @@ function App() {
               <Route path='/shipping' element={<ShippingAddressScreen />} />
               <Route path='/payment' element={<PaymentMethodScreen />} />
               <Route path='/placeorder' element={<PlaceOrderScreen />} />
-              <Route path='/order/:id' element={<OrderScreen />} />
+              <Route path='/orders/:id' element={<OrderScreen />} />
               <Route path='/' element={<HomeScreen />} />
             </Routes>
           </Container>
