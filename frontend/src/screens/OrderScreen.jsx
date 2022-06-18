@@ -60,7 +60,7 @@ const OrderScreen = () => {
     }
   }, [order, userInfo, orderId, navigate]);
   return loading ? (
-    <LoadingBox></LoadingBox>
+    <LoadingBox />
   ) : error ? (
     <MessageBox variant='danger'>{error}</MessageBox>
   ) : (
