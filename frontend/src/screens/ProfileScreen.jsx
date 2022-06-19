@@ -45,7 +45,7 @@ const ProfileScreen = () => {
       dispatch({ type: 'UPDATE_SUCCESS' });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      toastr.success('User info updated successfully');
+      toast.success('User info updated successfully');
     } catch (error) {
       dispatch({
         type: 'UPDATE_FAIL',
