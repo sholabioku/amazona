@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useReducer } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,6 +44,17 @@ const SearchScreen = () => {
 
   const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, { loading: true, error: '' });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+      } catch (error) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(error) });
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return <div>SearchScreen</div>;
 };
