@@ -74,7 +74,19 @@ const SearchScreen = () => {
       }
     };
     fetchCategories();
-  }, []);
+  }, [dispatch]);
+
+  const getFilterUrl = (filter) => {
+    const filterPage = filter.page || page;
+    const sortOrder = filter.order || order;
+    const filterPrice = filter.price || price;
+    const filterRating = filter.rating || rating;
+    const filterCategory = filter.category || category;
+    const filterQuery = filter.query || query;
+
+    const filterUrl = `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return filterUrl;
+  };
 
   return <div>SearchScreen</div>;
 };
