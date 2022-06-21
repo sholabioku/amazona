@@ -28,6 +28,7 @@ import axios from 'axios';
 import { getError } from './utils';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -153,12 +154,33 @@ function App() {
               <Route path='/search' element={<SearchScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
               <Route path='/signup' element={<SignupScreen />} />
-              <Route path='/profile' element={<ProfileScreen />} />
+              <Route
+                path='/profile'
+                element={
+                  <ProtectedRoute>
+                    <ProfileScreen />
+                  </ProtectedRoute>
+                }
+              />
               <Route path='/shipping' element={<ShippingAddressScreen />} />
               <Route path='/payment' element={<PaymentMethodScreen />} />
               <Route path='/placeorder' element={<PlaceOrderScreen />} />
-              <Route path='/orders/:id' element={<OrderScreen />} />
-              <Route path='/orderhistory' element={<OrderHistoryScreen />} />
+              <Route
+                path='/orders/:id'
+                element={
+                  <ProtectedRoute>
+                    <OrderScreen />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/orderhistory'
+                element={
+                  <ProtectedRoute>
+                    <OrderHistoryScreen />
+                  </ProtectedRoute>
+                }
+              />
               <Route path='/' element={<HomeScreen />} />
             </Routes>
           </Container>
