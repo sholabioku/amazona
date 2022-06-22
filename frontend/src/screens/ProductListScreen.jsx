@@ -1,4 +1,7 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useReducer } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Store } from '../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,6 +30,32 @@ const reducer = (state, action) => {
 };
 
 const ProductListScreen = () => {
+  const [{ loading, error, products, pages }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
+
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+
+  const search = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const page = searchParams.get('page') || 1;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/admin?page=${page}`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        });
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
+
   return <div>ProductListScreen</div>;
 };
 
