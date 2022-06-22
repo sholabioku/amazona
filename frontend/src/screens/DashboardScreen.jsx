@@ -123,7 +123,29 @@ const DashboardScreen = () => {
                   ['Date', 'Sales'],
                   ...summary.dailyOrders.map((item) => [item._id, item.sales]),
                 ]}
-              ></Chart>
+              />
+            )}
+          </div>
+          <div className='my-3'>
+            <h2>Categories</h2>
+            {summary.productCategories.lenght === 0 ? (
+              <MessageBox variant='info'>
+                No categories data available
+              </MessageBox>
+            ) : (
+              <Chart
+                width='100%'
+                height='400px'
+                chartType='PieChart'
+                loader={<div>Loading Chart...</div>}
+                data={[
+                  ['Category', 'Products'],
+                  ...summary.productCategories.map((item) => [
+                    item._id,
+                    item.count,
+                  ]),
+                ]}
+              />
             )}
           </div>
         </>
