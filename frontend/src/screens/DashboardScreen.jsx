@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { Chart } from 'react-google-charts';
+
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
@@ -97,15 +99,33 @@ const DashboardScreen = () => {
               <Card>
                 <Card.Body>
                   <Card.Title>
+                    $
                     {summary.orders && summary.users[0]
                       ? summary.orders[0].totalSales.toFixed(2)
                       : 0}
                   </Card.Title>
-                  <Card.Text>Orders</Card.Text>
+                  <Card.Text>Total Sales</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
+          <div className='my-3'>
+            <h2>Sales</h2>
+            {summary.dailyOrders.lenght === 0 ? (
+              <MessageBox variant='info'>No sales data available</MessageBox>
+            ) : (
+              <Chart
+                width='100%'
+                height='400px'
+                chartType='AreaChart'
+                loader={<div>Loading Chart...</div>}
+                data={[
+                  ['Date', 'Sales'],
+                  ...summary.dailyOrders.map((item) => [item._id, item.sales]),
+                ]}
+              ></Chart>
+            )}
+          </div>
         </>
       )}
     </div>
