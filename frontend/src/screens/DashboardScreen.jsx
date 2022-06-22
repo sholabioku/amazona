@@ -85,7 +85,7 @@ const DashboardScreen = () => {
               <Card>
                 <Card.Body>
                   <Card.Title>
-                    {summary.orders && summary.orders[0]
+                    {summary.orders && summary.users[0]
                       ? summary.orders[0].numOrders
                       : 0}
                   </Card.Title>
@@ -97,7 +97,7 @@ const DashboardScreen = () => {
               <Card>
                 <Card.Body>
                   <Card.Title>
-                    {summary.orders && summary.orders[0]
+                    {summary.orders && summary.users[0]
                       ? summary.orders[0].totalSales.toFixed(2)
                       : 0}
                   </Card.Title>
