@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
+import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -29,16 +31,33 @@ const reducer = (state, action) => {
         loading: false,
         error: action.payload,
       };
+    case 'CREATE_REQUEST':
+      return {
+        ...state,
+        loadingCreate: true,
+      };
+    case 'CREATE_SUCCESS':
+      return {
+        ...state,
+        loadingCreate: false,
+      };
+    case 'CREATE_FAIL':
+      return {
+        ...state,
+        loadingCreate: false,
+      };
     default:
       return state;
   }
 };
 
 const ProductListScreen = () => {
-  const [{ loading, error, products, pages }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const navigate = useNavigate();
+  const [{ loading, error, products, pages, loadingCreate }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
 
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -61,7 +80,28 @@ const ProductListScreen = () => {
     fetchData();
   }, [page, userInfo]);
 
-  const createHandler = (e) => {};
+  const createHandler = async (e) => {
+    if (window.confirm('Are you sure you want to create a new product?')) {
+      try {
+        dispatch({ type: 'CREATE_REQUEST' });
+        const { data } = await axios.post(
+          `/api/products`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
+        toast.success(`Product ${data.product.name} created successfully`);
+        dispatch({ type: 'CREATE_SUCCESS' });
+        navigate(`/admin/product/${data.product._id}`);
+      } catch (error) {
+        toast.error(getError(error));
+        dispatch({ type: 'CREATE_FAIL' });
+      }
+    }
+  };
 
   return (
     <div>
@@ -80,6 +120,8 @@ const ProductListScreen = () => {
           </div>
         </Col>
       </Row>
+
+      {loadingCreate && <LoadingBox />}
 
       {loading ? (
         <LoadingBox />
