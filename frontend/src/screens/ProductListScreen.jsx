@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -60,12 +61,26 @@ const ProductListScreen = () => {
     fetchData();
   }, [page, userInfo]);
 
+  const createHandler = (e) => {};
+
   return (
     <div>
-      <Helmet>
-        <title>Products</title>
-      </Helmet>
-      <h1>Products</h1>
+      <Row>
+        <Col>
+          <Helmet>
+            <title>Products</title>
+          </Helmet>
+          <h1>Products</h1>
+        </Col>
+        <Col className='col text-end'>
+          <div>
+            <Button type='button' onClick={createHandler}>
+              Create Product
+            </Button>
+          </div>
+        </Col>
+      </Row>
+
       {loading ? (
         <LoadingBox />
       ) : error ? (
