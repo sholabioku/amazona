@@ -62,7 +62,7 @@ const ProductListScreen = () => {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const search = useLocation();
+  const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const page = searchParams.get('page') || 1;
 
