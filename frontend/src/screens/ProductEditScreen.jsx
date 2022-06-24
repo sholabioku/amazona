@@ -1,6 +1,9 @@
-import React, { useContext, useState } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { useReducer } from 'react';
+import { useParams } from 'react-router-dom';
 import { Store } from '../Store';
+import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -26,6 +29,9 @@ const reducer = (state, action) => {
 };
 
 const ProductEditScreen = () => {
+  const params = useParams(); // /api/products/:id
+  const { id: productId } = params;
+
   const { state } = useContext(Store);
   const { userInfo } = state;
 
@@ -42,6 +48,27 @@ const ProductEditScreen = () => {
   const [countInStock, setCountInStock] = useState('');
   const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/products/${productId}`);
+        setName(data.name);
+        setSlug(data.slug);
+        setPrice(data.price);
+        setImage(data.image);
+        setCategory(data.category);
+        setCountInStock(data.countInStock);
+        setBrand(data.brand);
+        setDescription(data.description);
+        dispatch({ type: 'FETCH_SUCCESS' });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+      }
+    };
+    fetchData();
+  }, []);
 
   return <div></div>;
 };
