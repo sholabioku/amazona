@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Store } from '../Store';
 import { getError } from '../utils';
-import { LoadingBox, MessageBox } from '../components';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
