@@ -5,12 +5,6 @@ import multer from 'multer';
 
 import { isAuth, isAdmin } from '../utils.js';
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 const upload = multer();
 
 const uploadRouter = express.Router();
@@ -21,6 +15,12 @@ uploadRouter.post(
   isAdmin,
   upload.single('file'),
   async (req, res) => {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
     const streamUpload = (req) => {
       return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream((error, result) => {
