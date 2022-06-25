@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useReducer } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
@@ -27,6 +28,21 @@ const reducer = (state, action) => {
         loading: false,
         error: action.payload,
       };
+    case 'UPDATE_REQUEST':
+      return {
+        ...state,
+        loadingUpdate: true,
+      };
+    case 'UPDATE_SUCCESS':
+      return {
+        ...state,
+        loadingUpdate: false,
+      };
+    case 'UPDATE_FAIL':
+      return {
+        ...state,
+        loadingUpdate: false,
+      };
     default:
       return state;
   }
@@ -34,6 +50,7 @@ const reducer = (state, action) => {
 
 const ProductEditScreen = () => {
   const params = useParams(); // /api/products/:id
+  const navigate = useNavigate();
   const { id: productId } = params;
 
   const { state } = useContext(Store);
@@ -74,6 +91,33 @@ const ProductEditScreen = () => {
     fetchData();
   }, [productId]);
 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `/api/products/${productId}`,
+        {
+          _id: productId,
+          name,
+          slug,
+          price,
+          image,
+          category,
+          countInStock,
+          brand,
+          description,
+        },
+        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({ type: 'UPDATE_SUCCESS' });
+      toast.success('Product updated successfully');
+      navigate(`/admin/products`);
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: 'UPDATE_FAIL' });
+    }
+  };
+
   return (
     <Container className='small-container'>
       <Helmet>
@@ -86,7 +130,7 @@ const ProductEditScreen = () => {
       ) : error ? (
         <MessageBox variant='danger'>{error}</MessageBox>
       ) : (
-        <Form>
+        <Form onSubmit={submitHandler}>
           <Form.Group className='mb-3' controlId='name'>
             <Form.Label>Name</Form.Label>
             <Form.Control
