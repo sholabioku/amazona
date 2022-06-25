@@ -100,8 +100,13 @@ const ProductListScreen = () => {
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (error) {}
     };
-    fetchData();
-  }, [page, userInfo]);
+
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+  }, [page, successDelete, userInfo]);
 
   const createHandler = async (e) => {
     if (window.confirm('Are you sure you want to create a new product?')) {
@@ -162,6 +167,7 @@ const ProductListScreen = () => {
       </Row>
 
       {loadingCreate && <LoadingBox />}
+      {loadingDelete && <LoadingBox />}
 
       {loading ? (
         <LoadingBox />
