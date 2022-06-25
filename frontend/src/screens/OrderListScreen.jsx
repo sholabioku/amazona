@@ -102,7 +102,7 @@ const OrderListScreen = () => {
                     type='button'
                     variant='light'
                     onClick={() => {
-                      navigate(`/order/${order._id}`);
+                      navigate(`/orders/${order._id}`);
                     }}
                   >
                     Details
