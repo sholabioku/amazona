@@ -8,6 +8,7 @@ import { Store } from '../Store';
 import { getError } from '../utils';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,6 +29,18 @@ const reducer = (state, action) => {
         error: action.payload,
         loading: false,
       };
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+    case 'DELETE_SUCCESS':
+      return {
+        ...state,
+        loadingDelete: false,
+        successDelete: true,
+      };
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false };
+    case 'DELETE_RESET':
+      return { ...state, loadingDelete: false, successDelete: false };
     default:
       return state;
   }
@@ -38,10 +51,11 @@ const OrderListScreen = () => {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, orders, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,8 +71,30 @@ const OrderListScreen = () => {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
-    fetchData();
-  }, [userInfo]);
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+  }, [successDelete, userInfo]);
+
+  const deleteHandler = async (order) => {
+    if (window.confirm('Are you sure to delete?')) {
+      try {
+        dispatch({ type: 'DELETE_REQUEST' });
+        await axios.delete(`/api/orders/${order._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        toast.success('order deleted successfully');
+        dispatch({ type: 'DELETE_SUCCESS' });
+      } catch (err) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'DELETE_FAIL',
+        });
+      }
+    }
+  };
 
   return (
     <div>
@@ -66,6 +102,7 @@ const OrderListScreen = () => {
         <title>Orders</title>
       </Helmet>
       <h1>Orders</h1>
+      {loadingDelete && <LoadingBox></LoadingBox>}
       {loading ? (
         <LoadingBox />
       ) : error ? (
@@ -106,6 +143,14 @@ const OrderListScreen = () => {
                     }}
                   >
                     Details
+                  </Button>
+                  &nbsp;
+                  <Button
+                    type='button'
+                    variant='light'
+                    onClick={() => deleteHandler(order)}
+                  >
+                    Delete
                   </Button>
                 </td>
               </tr>
