@@ -39,7 +39,7 @@ import UserEditScreen from './screens/UserEditScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { fullBox, cart, userInfo } = state;
 
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
